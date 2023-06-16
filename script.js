@@ -55,7 +55,17 @@ btnHold.addEventListener('click', function () {
   scores[activePlayer] += currentScore;
   document.getElementById(`score--${activePlayer}`).textContent =
     scores[activePlayer];
-
-  //Swtich to next player
-  swtichPlayer();
+  //Check if players score >=100
+  if (scores[activePlayer] >= 100) {
+    // GAME FINISHED
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.add('player--winner');
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.remove('player--active');
+  } else {
+    //Swtich to next player
+    swtichPlayer();
+  }
 });
