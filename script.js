@@ -20,6 +20,7 @@ diceEl.classList.add('hidden');
 const scores = [0, 0];
 let currentScore = 0;
 let activePlayer = 0;
+let playing = true;
 
 const swtichPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
@@ -31,41 +32,47 @@ const swtichPlayer = function () {
 
 //Rolling dice functionality
 btnRoll.addEventListener('click', function () {
-  // Generating a random dice roll
-  const dice = Math.trunc(Math.random() * 6) + 1;
+  if (playing) {
+    // Generating a random dice roll
+    const dice = Math.trunc(Math.random() * 6) + 1;
 
-  // Display dice roll
-  diceEl.classList.remove('hidden');
-  diceEl.src = `dice-${dice}.png`;
+    // Display dice roll
+    diceEl.classList.remove('hidden');
+    diceEl.src = `dice-${dice}.png`;
 
-  // Checking for dice roll 1
-  if (dice !== 1) {
-    // add dice roll to current score
-    currentScore += dice;
-    document.getElementById(`current--${activePlayer}`).textContent =
-      currentScore;
-  } else {
-    // swtich to next player
-    swtichPlayer();
+    // Checking for dice roll 1
+    if (dice !== 1) {
+      // add dice roll to current score
+      currentScore += dice;
+      document.getElementById(`current--${activePlayer}`).textContent =
+        currentScore;
+    } else {
+      // swtich to next player
+      swtichPlayer();
+    }
   }
 });
 
 btnHold.addEventListener('click', function () {
-  // Add current score to active players score
-  scores[activePlayer] += currentScore;
-  document.getElementById(`score--${activePlayer}`).textContent =
-    scores[activePlayer];
-  //Check if players score >=100
-  if (scores[activePlayer] >= 100) {
-    // GAME FINISHED
-    document
-      .querySelector(`.player--${activePlayer}`)
-      .classList.add('player--winner');
-    document
-      .querySelector(`.player--${activePlayer}`)
-      .classList.remove('player--active');
-  } else {
-    //Swtich to next player
-    swtichPlayer();
+  if (playing) {
+    // Add current score to active players score
+    scores[activePlayer] += currentScore;
+    document.getElementById(`score--${activePlayer}`).textContent =
+      scores[activePlayer];
+    //Check if players score >=100
+    if (scores[activePlayer] >= 100) {
+      // GAME FINISHED
+      playing = false;
+      diceEl.classList.add('hidden');
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.add('player--winner');
+      document
+        .querySelector(`.player--${activePlayer}`)
+        .classList.remove('player--active');
+    } else {
+      //Swtich to next player
+      swtichPlayer();
+    }
   }
 });
