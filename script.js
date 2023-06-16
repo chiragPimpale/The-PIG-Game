@@ -21,6 +21,14 @@ const scores = [0, 0];
 let currentScore = 0;
 let activePlayer = 0;
 
+const swtichPlayer = function () {
+  document.getElementById(`current--${activePlayer}`).textContent = 0;
+  currentScore = 0;
+  activePlayer = activePlayer === 0 ? 1 : 0;
+  player0El.classList.toggle('player--active');
+  player1El.classList.toggle('player--active');
+};
+
 //Rolling dice functionality
 btnRoll.addEventListener('click', function () {
   // Generating a random dice roll
@@ -37,12 +45,8 @@ btnRoll.addEventListener('click', function () {
     document.getElementById(`current--${activePlayer}`).textContent =
       currentScore;
   } else {
-    document.getElementById(`current--${activePlayer}`).textContent = 0;
     // swtich to next player
-    currentScore = 0;
-    activePlayer = activePlayer === 0 ? 1 : 0;
-    player0El.classList.toggle('player--active');
-    player1El.classList.toggle('player--active');
+    swtichPlayer();
   }
 });
 
@@ -51,4 +55,7 @@ btnHold.addEventListener('click', function () {
   scores[activePlayer] += currentScore;
   document.getElementById(`score--${activePlayer}`).textContent =
     scores[activePlayer];
+
+  //Swtich to next player
+  swtichPlayer();
 });
